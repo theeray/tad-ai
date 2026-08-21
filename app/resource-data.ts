@@ -11,6 +11,22 @@ export type Resource = {
   tags: string[];
 };
 
+export type TimelineSource = {
+  label: string;
+  url: string;
+};
+
+export type TimelineEvent = {
+  id: string;
+  year: string;
+  date: string;
+  era: "Foundations" | "Breakthroughs" | "Generative AI" | "Governance & culture";
+  title: string;
+  summary: string;
+  significance: string;
+  sources: TimelineSource[];
+};
+
 export const statusLabels: Record<ResourceStatus, string> = {
   verified: "Verified",
   "tad-built": "TAD-built",
@@ -435,11 +451,151 @@ export const projectIdeas = [
   { title: "Resistor / settler zine", domain: "Critical Design", format: "10-page zine or 3–5 minute video" },
 ];
 
+export const timelineEvents: TimelineEvent[] = [
+  {
+    id: "logical-neuron-1943",
+    year: "1943",
+    date: "December 1943",
+    era: "Foundations",
+    title: "A mathematical model of the neuron",
+    summary: "Warren McCulloch and Walter Pitts described simplified artificial neurons using logic, linking computation and theories of the brain.",
+    significance: "The paper supplied an early conceptual foundation for neural networks—even though its model of biology was deliberately simplified.",
+    sources: [
+      { label: "Original paper", url: "https://doi.org/10.1007/BF02478259" },
+    ],
+  },
+  {
+    id: "turing-test-1950",
+    year: "1950",
+    date: "October 1950",
+    era: "Foundations",
+    title: "Turing reframes machine intelligence",
+    summary: "Alan Turing's “Computing Machinery and Intelligence” proposed the imitation game as a practical way to discuss whether machines can think.",
+    significance: "The paper shifted attention from defining thought to examining observable performance, an argument that still shapes AI evaluation.",
+    sources: [
+      { label: "Original paper", url: "https://academic.oup.com/mind/article/LIX/236/433/986238" },
+    ],
+  },
+  {
+    id: "dartmouth-1956",
+    year: "1956",
+    date: "Summer 1956",
+    era: "Foundations",
+    title: "Artificial intelligence becomes a field",
+    summary: "The Dartmouth Summer Research Project brought researchers together around a proposal that named and framed “artificial intelligence.”",
+    significance: "The workshop helped establish AI as a distinct research program with questions about language, learning, abstraction, and creativity.",
+    sources: [
+      { label: "Dartmouth history", url: "https://home.dartmouth.edu/about/artificial-intelligence-ai-coined-dartmouth" },
+      { label: "Original proposal", url: "https://www-formal.stanford.edu/jmc/history/dartmouth/dartmouth.html" },
+    ],
+  },
+  {
+    id: "deep-blue-1997",
+    year: "1997",
+    date: "May 11, 1997",
+    era: "Breakthroughs",
+    title: "Deep Blue defeats the world chess champion",
+    summary: "IBM's Deep Blue defeated Garry Kasparov in a six-game rematch, demonstrating the power of specialized computation and large-scale search.",
+    significance: "The victory became a public symbol of machine capability while also showing how narrow expertise differs from general intelligence.",
+    sources: [
+      { label: "IBM history", url: "https://www.ibm.com/history/deep-blue" },
+    ],
+  },
+  {
+    id: "alexnet-2012",
+    year: "2012",
+    date: "December 2012",
+    era: "Breakthroughs",
+    title: "AlexNet changes computer vision",
+    summary: "A deep convolutional neural network dramatically improved performance in the ImageNet competition using GPUs, large datasets, and learned features.",
+    significance: "AlexNet accelerated the modern deep-learning wave and changed how visual recognition systems were designed and trained.",
+    sources: [
+      { label: "NeurIPS paper", url: "https://proceedings.neurips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks" },
+    ],
+  },
+  {
+    id: "transformer-2017",
+    year: "2017",
+    date: "June 12, 2017",
+    era: "Breakthroughs",
+    title: "The transformer architecture arrives",
+    summary: "“Attention Is All You Need” introduced a sequence architecture built around attention rather than recurrent or convolutional layers.",
+    significance: "Transformers became the core architecture behind many modern language, image, audio, and multimodal systems.",
+    sources: [
+      { label: "Research paper", url: "https://arxiv.org/abs/1706.03762" },
+    ],
+  },
+  {
+    id: "chatgpt-2022",
+    year: "2022",
+    date: "November 30, 2022",
+    era: "Generative AI",
+    title: "ChatGPT brings conversational AI to a mass audience",
+    summary: "OpenAI released ChatGPT as a public research preview, making a dialogue-based large language model broadly accessible.",
+    significance: "The release rapidly changed public expectations, classroom policy, creative workflows, and investment across the technology sector.",
+    sources: [
+      { label: "OpenAI announcement", url: "https://openai.com/index/chatgpt/" },
+    ],
+  },
+  {
+    id: "eu-ai-act-2024",
+    year: "2024",
+    date: "August 1, 2024",
+    era: "Governance & culture",
+    title: "The European Union AI Act enters into force",
+    summary: "The EU adopted a comprehensive, risk-based legal framework governing the development and use of artificial intelligence.",
+    significance: "Its phased requirements made AI governance a design, documentation, transparency, and compliance concern—not only a technical one.",
+    sources: [
+      { label: "Official regulation", url: "https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng" },
+      { label: "EU implementation timeline", url: "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" },
+    ],
+  },
+  {
+    id: "bartz-ruling-2025",
+    year: "2025",
+    date: "June 23, 2025",
+    era: "Governance & culture",
+    title: "Bartz v. Anthropic separates training from piracy",
+    summary: "A federal district court held that Anthropic's LLM training was fair use and that replacing purchased print books with internal digital copies was fair use, but rejected fair use for its permanent library of pirated books.",
+    significance: "The decision is influential but narrow: it is one district-court ruling, it distinguished multiple kinds of copying, and it did not create a blanket exemption for AI companies.",
+    sources: [
+      { label: "Court order", url: "https://copyrightalliance.org/wp-content/uploads/2025/06/Bartz-v.-Anthropic-Order.pdf" },
+      { label: "AP explanation", url: "https://apnews.com/article/1e5cece51c2e4bd0bb21d94de2abb035" },
+    ],
+  },
+  {
+    id: "anthropic-settlement-2026",
+    year: "2026",
+    date: "July 20, 2026",
+    era: "Governance & culture",
+    title: "$1.5 billion Anthropic book settlement approved",
+    summary: "A federal judge granted final approval to the class settlement covering more than 482,000 books obtained from pirate libraries, with roughly $3,000 allocated per covered work before distribution adjustments.",
+    significance: "The settlement compensates rightsholders for pirated acquisition; it does not reverse the earlier fair-use ruling for model training or establish that all training on copyrighted material is lawful.",
+    sources: [
+      { label: "Final approval order", url: "https://publishers.org/wp-content/uploads/2026/07/Order-Granting-Final-Approval-of-Settlement171.pdf" },
+      { label: "AP report", url: "https://apnews.com/article/ai-anthropic-copyright-settlement-claude-books-bartz-74b140444023898aeba8579b6e9f0d63" },
+    ],
+  },
+  {
+    id: "amazon-book-scanning-2026",
+    year: "2026",
+    date: "August 17, 2026",
+    era: "Governance & culture",
+    title: "Investigation traces rare books to Amazon scanning facility",
+    summary: "404 Media tracked a shipment to an Amazon facility where employees said printed books were cut apart, scanned for AI training data, and destroyed in the process.",
+    significance: "The investigation supports concern that destructive scanning extends beyond Anthropic, while the buyers behind other unusual bulk book orders remain uncertain.",
+    sources: [
+      { label: "404 Media investigation", url: "https://www.404media.co/we-tracked-a-shipment-of-rare-books-it-ended-at-an-amazon-ai-training-facility/" },
+      { label: "TechCrunch summary", url: "https://techcrunch.com/2026/08/17/amazon-once-an-online-bookseller-is-destroying-rare-books-to-train-ai-models/" },
+    ],
+  },
+];
+
 export const learningResources = [
   {
-    title: "History of AI",
-    type: "Interactive timeline",
-    summary: "A long-view timeline for placing current tools inside the history of AI research and culture.",
+    title: "Original TAD History of AI timeline",
+    type: "Tiki-Toki archive",
+    summary: "The original external timeline remains available while the native timeline in this resource hub becomes the maintained version.",
     url: "https://www.tiki-toki.com/timeline/entry/2196919/History-Of-AI",
   },
   {
@@ -495,5 +651,17 @@ export const learningResources = [
     type: "Audio / legal context",
     summary: "A podcast resource connecting appropriation, transformation, and legal judgment in art.",
     url: "https://www.wnycstudios.org/podcasts/radiolabmoreperfect/episodes/andy-warhol-and-art-judging-art",
+  },
+  {
+    title: "Anthropic book piracy settlement",
+    type: "Copyright and AI training",
+    summary: "AP's overview of the $1.5 billion settlement, paired in the native timeline with the underlying fair-use and final-approval orders.",
+    url: "https://apnews.com/article/ai-anthropic-copyright-settlement-claude-books-bartz-74b140444023898aeba8579b6e9f0d63",
+  },
+  {
+    title: "Amazon destructive book-scanning investigation",
+    type: "Training data and cultural preservation",
+    summary: "404 Media's investigation tracing a rare-book shipment to an Amazon facility that cuts, scans, and destroys books for AI training data.",
+    url: "https://www.404media.co/we-tracked-a-shipment-of-rare-books-it-ended-at-an-amazon-ai-training-facility/",
   },
 ];

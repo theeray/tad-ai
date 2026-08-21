@@ -2,8 +2,6 @@
 
 A curated field guide to robust AI tools, creative workflows, project ideas, and critical resources for students and faculty in Bemidji State University’s School of Technology, Art & Design.
 
-![TAD AI Resource Hub](public/og.png)
-
 ## Live site
 
 [Open the TAD AI Resource Hub](https://tad-ai-resource-hub.the-eray.chatgpt.site)

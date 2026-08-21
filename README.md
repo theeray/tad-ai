@@ -13,7 +13,7 @@ Created and directed by **Eric Carlson**, with AI-assisted research, development
 - Searchable and filterable directory of creative AI resources
 - **Verified**, **Emerging**, and **TAD-built** status labels
 - Workflow maps for illustration, animation, 3D, audio, prototyping, research, and responsible practice
-- Native 2D and 3D AI history timeline with event-level sources
+- External Tiki-Toki AI history timeline with 2D and 3D viewing options
 - Project prompts and course learning resources
 - Responsive layouts for desktop, tablet, and mobile
 - TAD-derived visual identity, logo, and favicon
@@ -46,12 +46,10 @@ npm run build
 ## Project structure
 
 - `app/page.tsx` — interface and interactions
-- `app/resource-data.ts` — curated resources, workflows, projects, timeline events, and learning links
+- `app/resource-data.ts` — curated resources, workflows, projects, and learning links
 - `app/globals.css` — visual system and responsive layouts
 - `public/` — TAD logo, favicon, and social-preview assets
 
 ## Updating the directory
 
 Review a tool’s current functionality, professional usefulness, terms, privacy, ownership, and limitations before changing its status. Keep summaries scoped to the workflow that was actually evaluated.
-
-Timeline entries use a date, era, title, concise explanation, significance note, and one or more credible source links. Prefer primary documents for legal and technical milestones, paired with a readable report when useful.

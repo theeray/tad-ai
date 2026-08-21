@@ -1,16 +1,14 @@
 "use client";
 
-import { useMemo, useState, type CSSProperties } from "react";
+import { useMemo, useState } from "react";
 import {
   learningResources,
   projectIdeas,
   resources,
   statusLabels,
-  timelineEvents,
   workflows,
   type Resource,
   type ResourceStatus,
-  type TimelineEvent,
 } from "./resource-data";
 
 const preziUrl =
@@ -87,204 +85,6 @@ function ResourceCard({ resource, index }: { resource: Resource; index: number }
   );
 }
 
-const timelineEraOptions = [
-  "All eras",
-  "Foundations",
-  "Breakthroughs",
-  "Generative AI",
-  "Governance & culture",
-] as const;
-
-type TimelineEraOption = (typeof timelineEraOptions)[number];
-
-function TimelineSources({ event }: { event: TimelineEvent }) {
-  return (
-    <div className="timeline-sources" aria-label={`Sources for ${event.title}`}>
-      {event.sources.map((source) => (
-        <a href={source.url} target="_blank" rel="noreferrer" key={source.url}>
-          {source.label} <span aria-hidden="true">↗</span>
-        </a>
-      ))}
-    </div>
-  );
-}
-
-function TimelineExplorer() {
-  const [mode, setMode] = useState<"2d" | "3d">("2d");
-  const [era, setEra] = useState<TimelineEraOption>("All eras");
-  const [activeId, setActiveId] = useState(timelineEvents.at(-1)?.id ?? timelineEvents[0].id);
-
-  const visibleTimeline = useMemo(
-    () => timelineEvents.filter((event) => era === "All eras" || event.era === era),
-    [era],
-  );
-
-  const foundIndex = visibleTimeline.findIndex((event) => event.id === activeId);
-  const activeIndex = foundIndex >= 0 ? foundIndex : 0;
-  const activeEvent = visibleTimeline[activeIndex];
-
-  const chooseEra = (nextEra: TimelineEraOption) => {
-    const firstMatch = timelineEvents.find(
-      (event) => nextEra === "All eras" || event.era === nextEra,
-    );
-    setEra(nextEra);
-    if (firstMatch) setActiveId(firstMatch.id);
-  };
-
-  const moveActive = (direction: -1 | 1) => {
-    const nextIndex = Math.min(
-      visibleTimeline.length - 1,
-      Math.max(0, activeIndex + direction),
-    );
-    setActiveId(visibleTimeline[nextIndex].id);
-  };
-
-  return (
-    <div className="timeline-explorer">
-      <div className="timeline-toolbar">
-        <div className="timeline-view-toggle" aria-label="Timeline view">
-          <button type="button" aria-pressed={mode === "2d"} onClick={() => setMode("2d")}>
-            <span aria-hidden="true">▤</span> 2D timeline
-          </button>
-          <button type="button" aria-pressed={mode === "3d"} onClick={() => setMode("3d")}>
-            <span aria-hidden="true">◇</span> 3D timeline
-          </button>
-        </div>
-        <div className="timeline-era-filter" aria-label="Filter timeline by era">
-          {timelineEraOptions.map((option) => (
-            <button
-              type="button"
-              aria-pressed={era === option}
-              onClick={() => chooseEra(option)}
-              key={option}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {mode === "2d" ? (
-        <div className="timeline-2d-shell">
-          <ol className="timeline-2d-track" aria-label="AI history events">
-            {visibleTimeline.map((event) => (
-              <li key={event.id}>
-                <span className="timeline-node" aria-hidden="true" />
-                <article>
-                  <div className="timeline-card-heading">
-                    <span>{event.year}</span>
-                    <p>{event.era}</p>
-                  </div>
-                  <small>{event.date}</small>
-                  <h3>{event.title}</h3>
-                  <p>{event.summary}</p>
-                  <div className="timeline-significance">
-                    <b>Why it matters</b>
-                    <span>{event.significance}</span>
-                  </div>
-                  <TimelineSources event={event} />
-                </article>
-              </li>
-            ))}
-          </ol>
-          <p className="timeline-scroll-cue">Scroll through history →</p>
-        </div>
-      ) : (
-        <div className="timeline-3d-shell">
-          <div className="timeline-3d-controls">
-            <button
-              type="button"
-              onClick={() => moveActive(-1)}
-              disabled={activeIndex === 0}
-              aria-label="Previous timeline event"
-            >
-              ← Previous
-            </button>
-            <p aria-live="polite">
-              <b>{String(activeIndex + 1).padStart(2, "0")}</b>
-              <span> / {String(visibleTimeline.length).padStart(2, "0")}</span>
-            </p>
-            <button
-              type="button"
-              onClick={() => moveActive(1)}
-              disabled={activeIndex === visibleTimeline.length - 1}
-              aria-label="Next timeline event"
-            >
-              Next →
-            </button>
-          </div>
-
-          <div className="timeline-3d-stage" aria-label="Three-dimensional AI history view">
-            {visibleTimeline.map((event, index) => {
-              const offset = index - activeIndex;
-              const depth = Math.abs(offset);
-              if (depth > 2) return null;
-              const style = {
-                "--timeline-shift": `${offset * 48}%`,
-                "--timeline-z": `${depth * -180}px`,
-                "--timeline-y": `${depth * 18}px`,
-                "--timeline-rotate": `${offset * -11}deg`,
-                "--timeline-scale": 1 - depth * 0.12,
-                "--timeline-opacity": 1 - depth * 0.3,
-                zIndex: 10 - depth,
-              } as CSSProperties;
-              return (
-                <article
-                  className={`timeline-3d-card${offset === 0 ? " is-active" : ""}`}
-                  style={style}
-                  aria-hidden={offset !== 0}
-                  key={event.id}
-                >
-                  <button
-                    type="button"
-                    onClick={() => setActiveId(event.id)}
-                    tabIndex={offset === 0 ? 0 : -1}
-                    aria-label={`Select ${event.date}: ${event.title}`}
-                  >
-                    <span>{event.year}</span>
-                    <small>{event.era}</small>
-                    <b>{event.title}</b>
-                  </button>
-                  {offset === 0 && (
-                    <div className="timeline-3d-detail">
-                      <p>{event.date}</p>
-                      <h3>{event.title}</h3>
-                      <p>{event.summary}</p>
-                      <div className="timeline-significance">
-                        <b>Why it matters</b>
-                        <span>{event.significance}</span>
-                      </div>
-                      <TimelineSources event={event} />
-                    </div>
-                  )}
-                </article>
-              );
-            })}
-          </div>
-
-          <div className="timeline-year-jump" aria-label="Jump to a timeline event">
-            {visibleTimeline.map((event) => (
-              <button
-                type="button"
-                aria-pressed={activeEvent.id === event.id}
-                onClick={() => setActiveId(event.id)}
-                key={event.id}
-              >
-                {event.year}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <p className="timeline-update-note">
-        <b>Built to grow:</b> send a date, title, explanation, and credible source.
-        New entries are added directly to this maintained timeline.
-      </p>
-    </div>
-  );
-}
-
 export default function Home() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
@@ -332,7 +132,6 @@ export default function Home() {
             <a href="#directory">Directory</a>
             <a href="#workflows">Workflows</a>
             <a href="#projects">Projects</a>
-            <a href="#timeline">Timeline</a>
             <a href="#learn">Learn</a>
             <a href="#verification">Verification</a>
           </div>
@@ -529,28 +328,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="timeline-section" id="timeline">
-        <div className="content-section">
-          <div className="section-heading inverse timeline-heading">
-            <div>
-              <p className="eyebrow">04 / AI timeline</p>
-              <h2>History changes the view.</h2>
-            </div>
-            <p>
-              Move between a clear chronological map and a spatial view that
-              brings one turning point forward at a time. Each entry links to
-              the strongest available source and separates evidence from interpretation.
-            </p>
-          </div>
-          <TimelineExplorer />
-        </div>
-      </section>
-
       <section className="learn-section" id="learn">
         <div className="content-section">
           <div className="section-heading">
             <div>
-              <p className="eyebrow dark">05 / Learn + question</p>
+              <p className="eyebrow dark">04 / Learn + question</p>
               <h2>Context belongs in the workflow.</h2>
             </div>
             <p>
@@ -576,7 +358,7 @@ export default function Home() {
       <section className="verification-section" id="verification">
         <div className="verification-grid">
           <div className="verification-intro">
-            <p className="eyebrow">06 / Verification standard</p>
+            <p className="eyebrow">05 / Verification standard</p>
             <h2>Verified is a working claim.</h2>
             <p>
               It means the current evidence supports a tool as high-quality,

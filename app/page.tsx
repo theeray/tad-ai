@@ -125,7 +125,7 @@ export default function Home() {
         <div className="circuit-pattern" aria-hidden="true" />
         <nav className="site-nav" aria-label="Main navigation">
           <a className="brand-lockup" href="#top" aria-label="TAD AI Resource Hub home">
-            <img src="/ai-tad-logo.png" alt="" />
+            <img src="./ai-tad-logo.png" alt="" />
             <span>Resource Hub</span>
           </a>
           <div className="nav-links">
@@ -174,7 +174,7 @@ export default function Home() {
             <div className="hero-identity-card">
               <img
                 className="hero-logo"
-                src="/ai-tad-logo.png"
+                src="./ai-tad-logo.png"
                 alt="TAD AI logo"
               />
               <nav className="hero-identity-meta" aria-label="Resource hub focus">
@@ -407,7 +407,7 @@ export default function Home() {
 
       <footer>
         <a className="brand-lockup footer-brand" href="#top">
-          <img src="/ai-tad-logo.png" alt="TAD AI" />
+          <img src="./ai-tad-logo.png" alt="TAD AI" />
           <span>Resource Hub</span>
         </a>
         <p>School of Technology, Art &amp; Design · Bemidji State University</p>

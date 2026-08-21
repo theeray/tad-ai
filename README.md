@@ -4,7 +4,7 @@ A curated field guide to robust AI tools, creative workflows, project ideas, and
 
 ## Live site
 
-[Open the TAD AI Resource Hub](https://tad-ai-resource-hub.the-eray.chatgpt.site)
+[Open the TAD AI Resource Hub](https://theeray.github.io/tad-ai/)
 
 ## What it includes
 

@@ -12,7 +12,7 @@ import {
 } from "./resource-data";
 
 const preziUrl =
-  "https://prezi.com/view/hA7y76syYIEjPvflo1nh/?referral_token=PsDn3ylnB3FN";
+  "https://prezi.com/view/hA7y76syYIEjPvflo1nh/";
 
 const statusOptions: Array<{ value: "all" | ResourceStatus; label: string }> = [
   { value: "all", label: "All statuses" },
@@ -250,7 +250,7 @@ export default function Home() {
         </div>
 
         <div className="results-meta">
-          <p><b>{visibleResources.length}</b> resources shown · Curated August 2026</p>
+          <p><b>{visibleResources.length}</b> resources shown · Curated September 2026</p>
           {(query || category !== "all" || status !== "all") && (
             <button type="button" onClick={resetFilters}>Clear filters</button>
           )}
@@ -367,7 +367,7 @@ export default function Home() {
               institutionally approved, secure for every file, or superior to
               non-AI methods.
             </p>
-            <p className="verification-date">Current curation review · August 2026</p>
+            <p className="verification-date">Current curation review · September 2026</p>
             <div className="verification-legend">
               <span><i className="status-dot verified" /><b>Verified</b> High-quality, repeatable use</span>
               <span><i className="status-dot tad-built" /><b>TAD-built</b> Local workflow or tutorial</span>

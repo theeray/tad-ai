@@ -18,7 +18,7 @@ Created and directed by **Eric Carlson**, with AI-assisted research, development
 - Responsive layouts for desktop, tablet, and mobile
 - TAD-derived visual identity, logo, and favicon
 
-“Verified” identifies a high-quality, robust tool for its stated workflow. It is not blanket ethical or institutional endorsement. The directory was last curated in August 2026.
+“Verified” identifies a high-quality, robust tool for its stated workflow. It is not blanket ethical or institutional endorsement. The directory was last curated in September 2026.
 
 ## Technology
 

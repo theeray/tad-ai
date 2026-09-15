@@ -167,6 +167,15 @@ export const resources: Resource[] = [
     tags: ["video generation", "native audio", "multi-shot", "consistency"],
   },
   {
+    name: "MiniMax Hailuo AI",
+    category: "Animation & Video",
+    status: "verified",
+    summary: "A multimodal video platform for text-, image-, and reference-driven generation with native sound, camera and motion direction, and iterative editing.",
+    url: "https://hailuoai.video/",
+    note: "Strong current motion and reference control. Avoid copyrighted characters or branded source material; document inputs and confirm project-specific rights, privacy, and commercial terms.",
+    tags: ["video generation", "native audio", "reference control", "video editing", "MiniMax"],
+  },
+  {
     name: "HeyGen",
     category: "Animation & Video",
     status: "verified",
@@ -446,13 +455,7 @@ export const learningResources = [
     title: "AI for Art & Design",
     type: "TADD 2310 Prezi",
     summary: "The course presentation that frames AI in relation to creative practice, critique, and design workflows.",
-    url: "https://prezi.com/view/hA7y76syYIEjPvflo1nh/?referral_token=PsDn3ylnB3FN",
-  },
-  {
-    title: "AI Course Outline",
-    type: "TAD course document",
-    summary: "Working outline for the AI for Art & Design course. Institutional sign-in may be required.",
-    url: "https://mnscu.sharepoint.com/:w:/r/teams/BSU-DigitalCorps540-Team/Shared%20Documents/AI%20Research%20and%20Development%20Corps/AI%20Class%20Resources/Course%20Outline.docx",
+    url: "https://prezi.com/view/hA7y76syYIEjPvflo1nh/",
   },
   {
     title: "TAD AI Links",

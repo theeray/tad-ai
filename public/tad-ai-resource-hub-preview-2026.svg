@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">TAD AI Resource Hub</title>
+  <desc id="desc">A clean social preview for the TAD AI Resource Hub with verified tools, creative workflows, and critical resources.</desc>
+  <defs>
+    <linearGradient id="depth" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#04271f"/>
+      <stop offset="1" stop-color="#07352a"/>
+    </linearGradient>
+    <radialGradient id="signalGlow" cx="78%" cy="48%" r="52%">
+      <stop offset="0" stop-color="#00efad" stop-opacity=".13"/>
+      <stop offset=".55" stop-color="#00efad" stop-opacity=".035"/>
+      <stop offset="1" stop-color="#00efad" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="72" height="72" patternUnits="userSpaceOnUse">
+      <path d="M72 0H0V72" fill="none" stroke="#00efad" stroke-opacity=".055" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#depth)"/>
+  <rect width="1200" height="630" fill="url(#signalGlow)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <g fill="none" stroke="#00efad" stroke-opacity=".17" stroke-width="2">
+    <path d="M738 86h102l30 30h146"/>
+    <path d="M780 138h118l26 26h186"/>
+    <path d="M788 500h82l34-34h206"/>
+    <path d="M728 548h126l30-30h136"/>
+    <circle cx="738" cy="86" r="5" fill="#00efad" stroke="none"/>
+    <circle cx="1110" cy="164" r="5" fill="#00efad" stroke="none"/>
+    <circle cx="788" cy="500" r="5" fill="#00efad" stroke="none"/>
+  </g>
+
+  <g transform="translate(72 68)">
+    <rect width="14" height="14" fill="#ea4d2f"/>
+    <rect x="21" width="14" height="14" fill="#f7c83e"/>
+    <rect x="42" width="14" height="14" fill="#2aaac4"/>
+    <text x="76" y="13" fill="#fffef7" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="800" letter-spacing="3">SCHOOL OF TECHNOLOGY, ART &amp; DESIGN</text>
+  </g>
+
+  <g transform="translate(72 160)">
+    <text fill="#fffef7" font-family="Arial Narrow, Helvetica Neue, Arial, sans-serif" font-size="92" font-weight="900" letter-spacing="-3">
+      <tspan x="0" y="0">TAD AI</tspan>
+      <tspan x="0" y="88" fill="#00efad">RESOURCE HUB</tspan>
+    </text>
+    <rect y="125" width="838" height="2" fill="#00efad"/>
+    <circle cx="838" cy="126" r="6" fill="#00efad"/>
+    <text y="179" fill="#c8d8d1" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="500">
+      <tspan x="0">A field guide for responsible, creative AI practice.</tspan>
+    </text>
+  </g>
+
+  <g transform="translate(72 468)" font-family="Inter, Arial, sans-serif" font-size="19" font-weight="800" letter-spacing="1">
+    <g>
+      <circle cx="8" cy="8" r="8" fill="#00efad"/>
+      <text x="30" y="15" fill="#fffef7">VERIFIED TOOLS</text>
+    </g>
+    <g transform="translate(246)">
+      <circle cx="8" cy="8" r="8" fill="#f7c83e"/>
+      <text x="30" y="15" fill="#fffef7">CREATIVE WORKFLOWS</text>
+    </g>
+    <g transform="translate(564)">
+      <circle cx="8" cy="8" r="8" fill="#ea4d2f"/>
+      <text x="30" y="15" fill="#fffef7">CRITICAL RESOURCES</text>
+    </g>
+  </g>
+
+  <g transform="translate(72 560)">
+    <text fill="#00efad" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="800" letter-spacing="2">THEERAY.GITHUB.IO/TAD-AI</text>
+    <rect x="1002" y="-10" width="16" height="16" fill="#ea4d2f"/>
+    <rect x="1026" y="-10" width="16" height="16" fill="#f7c83e"/>
+    <rect x="1050" y="-10" width="16" height="16" fill="#2aaac4"/>
+  </g>
+</svg>

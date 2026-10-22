@@ -25,7 +25,8 @@ const categoryCodes: Record<string, string> = {
   Illustration: "IL",
   "Animation & Video": "AV",
   "Motion Graphics": "MG",
-  "3D & CAD": "3D",
+  "3D & Spatial": "3D",
+  "Prototype & Engineering": "PE",
   "Apps & Games": "AG",
   Audio: "AU",
   "Graphic Design": "GD",
@@ -198,7 +199,7 @@ export default function Home() {
       <section className="signal-band" aria-label="Collection overview">
         <div><b>{verifiedCount}</b><span>Verified tools</span></div>
         <div><b>{builtCount}</b><span>TAD-built workflows</span></div>
-        <div><b>{categories.length}</b><span>Creative domains</span></div>
+        <div><b>{categories.length}</b><span>Practice domains</span></div>
         <div><b>{resources.length}</b><span>Structured resources</span></div>
       </section>
 
@@ -228,9 +229,9 @@ export default function Home() {
             />
           </label>
           <label>
-            <span className="sr-only">Filter by creative domain</span>
+            <span className="sr-only">Filter by domain</span>
             <select value={category} onChange={(event) => setCategory(event.target.value)}>
-              <option value="all">All creative domains</option>
+              <option value="all">All domains</option>
               {categories.map((item) => (
                 <option key={item} value={item}>{item}</option>
               ))}
@@ -250,7 +251,7 @@ export default function Home() {
         </div>
 
         <div className="results-meta">
-          <p><b>{visibleResources.length}</b> resources shown · Curated September 2026</p>
+          <p><b>{visibleResources.length}</b> resources shown · Curated October 2026</p>
           {(query || category !== "all" || status !== "all") && (
             <button type="button" onClick={resetFilters}>Clear filters</button>
           )}
@@ -367,7 +368,7 @@ export default function Home() {
               institutionally approved, secure for every file, or superior to
               non-AI methods.
             </p>
-            <p className="verification-date">Current curation review · September 2026</p>
+            <p className="verification-date">Current curation review · October 2026</p>
             <div className="verification-legend">
               <span><i className="status-dot verified" /><b>Verified</b> High-quality, repeatable use</span>
               <span><i className="status-dot tad-built" /><b>TAD-built</b> Local workflow or tutorial</span>

@@ -597,6 +597,7 @@ export const projectIdeas = [
   { title: "Live video to AI", domain: "Experimental Media", format: "Performance test" },
   { title: "AI trainer journey", domain: "Project Management", format: "Process documentation" },
   { title: "Resistor / settler zine", domain: "Critical Design", format: "10-page zine or 3–5 minute video" },
+  { title: "Exhibit design fly-through", domain: "Exhibit Design + 3D", format: "3ds Max primary / Blender alternate. Camera and depth guides to AI video. BN219 pilot and tutorials forthcoming." },
 ];
 
 export const learningResources = [

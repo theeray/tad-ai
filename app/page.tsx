@@ -2,7 +2,10 @@
 
 import { useMemo, useState } from "react";
 import {
+  directoryDomains,
+  getResourceDomains,
   learningResources,
+  matchesResource,
   projectIdeas,
   resources,
   statusLabels,
@@ -19,6 +22,7 @@ const statusOptions: Array<{ value: "all" | ResourceStatus; label: string }> = [
   { value: "verified", label: "Verified" },
   { value: "tad-built", label: "TAD-built" },
   { value: "review", label: "Emerging" },
+  { value: "reference", label: "Reference" },
 ];
 
 const categoryCodes: Record<string, string> = {
@@ -32,6 +36,16 @@ const categoryCodes: Record<string, string> = {
   "Graphic Design": "GD",
   "Research & Learning": "RL",
   "Responsible Practice": "RP",
+  "Event Design & Planning": "ED",
+  "Event Planning & Management": "EM",
+  "Exhibit & Experience Design": "EX",
+  "Technology, Art & Design": "TD",
+  "BFA Fine Art": "FA",
+  "Interactive Multimedia Design": "IM",
+  "Computer Science & Design": "CS",
+  "Digital Illustration & Animation": "DA",
+  "Visual Arts Education": "AE",
+  "Project Management": "PM",
 };
 
 function ArrowIcon() {
@@ -50,7 +64,7 @@ function ExternalIcon() {
   );
 }
 
-function ResourceCard({ resource, index }: { resource: Resource; index: number }) {
+function ResourceCard({ resource, index, activeDomain }: { resource: Resource; index: number; activeDomain: string }) {
   const categoryClass = resource.category.toLowerCase().replaceAll(" ", "-").replaceAll("&", "and");
   return (
     <article className={`resource-card category-${categoryClass}`}>
@@ -63,7 +77,9 @@ function ResourceCard({ resource, index }: { resource: Resource; index: number }
           {statusLabels[resource.status]}
         </span>
       </div>
-      <p className="resource-category">{resource.category}</p>
+      <p className="resource-category" title={getResourceDomains(resource).join(" · ")}>
+        {activeDomain === "all" ? resource.category : activeDomain}
+      </p>
       <h3>{resource.name}</h3>
       <p className="resource-summary">{resource.summary}</p>
       {resource.note && <p className="resource-note">{resource.note}</p>}
@@ -91,24 +107,10 @@ export default function Home() {
   const [category, setCategory] = useState("all");
   const [status, setStatus] = useState<"all" | ResourceStatus>("all");
 
-  const categories = useMemo(
-    () => Array.from(new Set(resources.map((resource) => resource.category))),
-    [],
-  );
+  const categories = directoryDomains;
 
   const visibleResources = useMemo(() => {
-    const normalized = query.trim().toLowerCase();
-    return resources.filter((resource) => {
-      const matchesQuery =
-        !normalized ||
-        [resource.name, resource.category, resource.summary, resource.note ?? "", ...resource.tags]
-          .join(" ")
-          .toLowerCase()
-          .includes(normalized);
-      const matchesCategory = category === "all" || resource.category === category;
-      const matchesStatus = status === "all" || resource.status === status;
-      return matchesQuery && matchesCategory && matchesStatus;
-    });
+    return resources.filter((resource) => matchesResource(resource, { query, category, status }));
   }, [category, query, status]);
 
   const verifiedCount = resources.filter((resource) => resource.status === "verified").length;
@@ -212,6 +214,7 @@ export default function Home() {
           <p>
             Start with the workflow—not the novelty. Search by task, filter by
             domain, and check the status before committing time, money, or work.
+            A resource may appear in more than one domain.
           </p>
         </div>
 
@@ -260,7 +263,7 @@ export default function Home() {
         {visibleResources.length > 0 ? (
           <div className="resource-grid">
             {visibleResources.map((resource, index) => (
-              <ResourceCard key={resource.name} resource={resource} index={index} />
+              <ResourceCard key={resource.name} resource={resource} index={index} activeDomain={category} />
             ))}
           </div>
         ) : (
@@ -313,7 +316,7 @@ export default function Home() {
             <h2>Make something that tests the claim.</h2>
           </div>
           <p>
-            These ideas come from the course planning workbook. Each one is a
+            These ideas connect course planning with professional practice. Each one is a
             vehicle for testing where AI helps, where it fails, and what the maker contributes.
           </p>
         </div>
@@ -373,6 +376,7 @@ export default function Home() {
               <span><i className="status-dot verified" /><b>Verified</b> High-quality, repeatable use</span>
               <span><i className="status-dot tad-built" /><b>TAD-built</b> Local workflow or tutorial</span>
               <span><i className="status-dot review" /><b>Emerging</b> Promising, still changing or not yet proven enough to call standard</span>
+              <span><i className="status-dot reference" /><b>Reference</b> Documentation, courses, or teaching frameworks</span>
             </div>
           </div>
           <div className="verification-checks">
@@ -417,3 +421,4 @@ export default function Home() {
     </main>
   );
 }
+

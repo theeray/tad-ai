@@ -12,13 +12,13 @@ Created and directed by **Eric Carlson**, with AI-assisted research, development
 
 - Searchable and filterable directory of creative AI resources
 - **Verified**, **Emerging**, and **TAD-built** status labels
-- Workflow maps for illustration, animation, 3D, audio, prototyping, research, and responsible practice
+- Workflow maps for illustration, animation, 3D, audio, prototyping, coding, exhibits, events, project management, teaching, and responsible practice
 - External Tiki-Toki AI history timeline with 2D and 3D viewing options
 - Project prompts and course learning resources
 - Responsive layouts for desktop, tablet, and mobile
 - TAD-derived visual identity, logo, and favicon
 
-“Verified” identifies a high-quality, robust tool for its stated workflow. It is not blanket ethical or institutional endorsement. The directory was last curated in September 2026.
+"Verified" identifies a high-quality, robust tool for its stated workflow. It is not blanket ethical or institutional endorsement. The directory was last curated in October 2026. Reference labels identify courses, frameworks, and supporting documentation.
 
 ## Technology
 
@@ -53,3 +53,8 @@ npm run build
 ## Updating the directory
 
 Review a tool’s current functionality, professional usefulness, terms, privacy, ownership, and limitations before changing its status. Keep summaries scoped to the workflow that was actually evaluated.
+
+Existing domain labels are retained. Additional program-area names match `BSUTAD/Advisory-Board/src/key.js`, including **Computer Science & Design** and **Exhibit & Experience Design**; **Project Management** is also available. Keep a resource's primary `category` and use `domains` to make it discoverable in other relevant areas without duplicating its card. Domain names participate in text search and combine with status filters.
+
+Run `npm run test:directory` and `npm run build:pages` before publishing directory changes. The Pages workflow runs both checks.
+

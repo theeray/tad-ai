@@ -3,6 +3,7 @@ export type ResourceStatus = "verified" | "tad-built" | "review" | "reference";
 export type Resource = {
   name: string;
   category: string;
+  domains?: string[];
   status: ResourceStatus;
   summary: string;
   url: string;
@@ -18,10 +19,44 @@ export const statusLabels: Record<ResourceStatus, string> = {
   reference: "Reference",
 };
 
+// Exact program-area labels from BSUTAD/Advisory-Board/src/key.js.
+// These supplement the hub's existing categories; they do not replace them.
+export const advisoryBoardDomains = [
+  "Event Design & Planning",
+  "Event Planning & Management",
+  "Exhibit & Experience Design",
+  "Technology, Art & Design",
+  "Graphic Design",
+  "BFA Fine Art",
+  "Interactive Multimedia Design",
+  "Computer Science & Design",
+  "Digital Illustration & Animation",
+  "Visual Arts Education",
+];
+
+export function getResourceDomains(resource: Resource): string[] {
+  return Array.from(new Set([resource.category, ...(resource.domains ?? [])]));
+}
+
+export function matchesResource(
+  resource: Resource,
+  filters: { query: string; category: string; status: "all" | ResourceStatus },
+): boolean {
+  const domains = getResourceDomains(resource);
+  const normalized = filters.query.trim().toLowerCase();
+  const text = [resource.name, ...domains, resource.summary, resource.note ?? "", ...resource.tags]
+    .join(" ")
+    .toLowerCase();
+  return (!normalized || text.includes(normalized))
+    && (filters.category === "all" || domains.includes(filters.category))
+    && (filters.status === "all" || resource.status === filters.status);
+}
+
 export const resources: Resource[] = [
   {
     name: "Adobe Firefly",
     category: "Illustration",
+    domains: ["Digital Illustration & Animation","BFA Fine Art"],
     status: "verified",
     summary: "A mature creative-AI workspace for image, video, audio, and vector generation inside Adobe workflows.",
     url: "https://www.adobe.com/products/firefly.html",
@@ -31,6 +66,7 @@ export const resources: Resource[] = [
   {
     name: "Nano Banana / Gemini Images",
     category: "Illustration",
+    domains: ["Digital Illustration & Animation","BFA Fine Art"],
     status: "verified",
     summary: "Fast image generation and editing with strong conversational control over characters, layout, and revisions.",
     url: "https://gemini.google.com/",
@@ -40,6 +76,7 @@ export const resources: Resource[] = [
   {
     name: "Midjourney",
     category: "Illustration",
+    domains: ["Digital Illustration & Animation","BFA Fine Art"],
     status: "verified",
     summary: "A high-quality image system for concept art, visual development, reference-driven variation, and style exploration.",
     url: "https://www.midjourney.com/",
@@ -49,6 +86,7 @@ export const resources: Resource[] = [
   {
     name: "Ideogram",
     category: "Illustration",
+    domains: ["Exhibit & Experience Design"],
     status: "verified",
     summary: "A design-aware image model with especially useful typography, layout, editing, and high-resolution output.",
     url: "https://ideogram.ai/",
@@ -57,6 +95,7 @@ export const resources: Resource[] = [
   {
     name: "FLUX / Black Forest Labs",
     category: "Illustration",
+    domains: ["Digital Illustration & Animation","BFA Fine Art"],
     status: "verified",
     summary: "A professional image-model family with strong generation and editing capabilities plus an important open-model ecosystem.",
     url: "https://bfl.ai/models",
@@ -66,6 +105,7 @@ export const resources: Resource[] = [
   {
     name: "ComfyUI",
     category: "Illustration",
+    domains: ["Digital Illustration & Animation","Technology, Art & Design","Computer Science & Design"],
     status: "verified",
     summary: "A modular, node-based creation engine for controlled image, video, 3D, and audio pipelines.",
     url: "https://github.com/Comfy-Org/ComfyUI",
@@ -75,6 +115,7 @@ export const resources: Resource[] = [
   {
     name: "LoRA Training Workflow",
     category: "Illustration",
+    domains: ["Digital Illustration & Animation","BFA Fine Art"],
     status: "tad-built",
     summary: "A TAD-created workflow for training a distinctive character or visual style for reuse across compatible tools.",
     url: "https://ior.ad/b5nn?iframeHash=trysteps-1",
@@ -83,6 +124,7 @@ export const resources: Resource[] = [
   {
     name: "Krita Live Drawing Workflow",
     category: "Illustration",
+    domains: ["Digital Illustration & Animation","BFA Fine Art","Visual Arts Education"],
     status: "tad-built",
     summary: "A locally controlled workflow that turns live drawing changes into AI-rendered iterations without sharing the original artwork.",
     url: "https://www.iorad.com/player/2628799/How-to-use-Krita-live-generative-AI-tool-on-AI-computer-",
@@ -91,6 +133,7 @@ export const resources: Resource[] = [
   {
     name: "Recraft",
     category: "Graphic Design",
+    domains: ["Exhibit & Experience Design","Event Design & Planning"],
     status: "verified",
     summary: "A design-focused platform for editable graphics, vector generation, mockups, icon systems, and brand assets.",
     url: "https://www.recraft.ai/",
@@ -99,6 +142,7 @@ export const resources: Resource[] = [
   {
     name: "Figma AI & Make",
     category: "Graphic Design",
+    domains: ["Interactive Multimedia Design","Computer Science & Design"],
     status: "verified",
     summary: "AI-assisted design, prototyping, and code generation embedded in a collaborative professional design platform.",
     url: "https://www.figma.com/ai/",
@@ -109,6 +153,7 @@ export const resources: Resource[] = [
   {
     name: "Canva AI / Magic Studio",
     category: "Graphic Design",
+    domains: ["Visual Arts Education","Event Design & Planning"],
     status: "verified",
     summary: "An accessible, integrated suite for layouts, branded content, presentations, images, video, and collaborative editing.",
     url: "https://www.canva.com/canva-ai/",
@@ -118,6 +163,7 @@ export const resources: Resource[] = [
   {
     name: "Topaz Labs",
     category: "Graphic Design",
+    domains: ["BFA Fine Art","Digital Illustration & Animation"],
     status: "verified",
     summary: "Professional AI-assisted image and video restoration for denoising, sharpening, stabilization, and upscaling.",
     url: "https://www.topazlabs.com/",
@@ -126,6 +172,7 @@ export const resources: Resource[] = [
   {
     name: "Napkin AI",
     category: "Graphic Design",
+    domains: ["Project Management","Visual Arts Education"],
     status: "review",
     summary: "Turns structured text into editable diagrams and visual explainers for presentations and process documentation.",
     url: "https://www.napkin.ai/",
@@ -135,6 +182,7 @@ export const resources: Resource[] = [
   {
     name: "Runway",
     category: "Animation & Video",
+    domains: ["Digital Illustration & Animation","Exhibit & Experience Design"],
     status: "verified",
     summary: "A mature creative-video platform for generation, editing, performance capture, motion control, and production workflows.",
     url: "https://runwayml.com/",
@@ -144,6 +192,7 @@ export const resources: Resource[] = [
   {
     name: "Google Flow / Veo",
     category: "Animation & Video",
+    domains: ["Digital Illustration & Animation"],
     status: "verified",
     summary: "A filmmaker-oriented workspace for generating shots, extending scenes, and assembling controlled video sequences with Veo.",
     url: "https://labs.google/fx/tools/flow",
@@ -152,6 +201,7 @@ export const resources: Resource[] = [
   {
     name: "Luma Dream Machine",
     category: "Animation & Video",
+    domains: ["Digital Illustration & Animation","Exhibit & Experience Design"],
     status: "verified",
     summary: "A production-capable video workspace for text, image, and footage generation, transformation, continuity, and editing.",
     url: "https://lumalabs.ai/create",
@@ -160,6 +210,7 @@ export const resources: Resource[] = [
   {
     name: "Kling AI",
     category: "Animation & Video",
+    domains: ["Digital Illustration & Animation"],
     status: "verified",
     summary: "A high-quality video system with native audio, multi-shot control, element consistency, and reference-driven generation.",
     url: "https://app.klingai.com/global/",
@@ -169,6 +220,7 @@ export const resources: Resource[] = [
   {
     name: "MiniMax Hailuo AI",
     category: "Animation & Video",
+    domains: ["Digital Illustration & Animation","Exhibit & Experience Design"],
     status: "verified",
     summary: "A multimodal video platform for text-, image-, and reference-driven generation with native sound, camera and motion direction, and iterative editing.",
     url: "https://hailuoai.video/",
@@ -178,6 +230,7 @@ export const resources: Resource[] = [
   {
     name: "BN219 MiniMax Video Workflow",
     category: "Animation & Video",
+    domains: ["Digital Illustration & Animation","Exhibit & Experience Design"],
     status: "tad-built",
     summary: "TAD’s operational BN219 workflow for generating shots with MiniMax Hailuo, then reviewing, editing, finishing, and documenting the work locally.",
     url: "https://hailuoai.video/",
@@ -187,6 +240,7 @@ export const resources: Resource[] = [
   {
     name: "DaVinci Resolve AI Neural Engine",
     category: "Animation & Video",
+    domains: ["Digital Illustration & Animation","Interactive Multimedia Design"],
     status: "verified",
     summary: "Professional editing, color, audio, and visual-effects software with AI tools for reframing, masking, tracking, retiming, cleanup, transcription, and search.",
     url: "https://www.blackmagicdesign.com/products/davinciresolve",
@@ -205,6 +259,7 @@ export const resources: Resource[] = [
   {
     name: "Autodesk Flow Studio",
     category: "Animation & Video",
+    domains: ["Digital Illustration & Animation"],
     status: "verified",
     summary: "AI-assisted visual-effects production for motion capture, camera tracking, CG character placement, rigging, and editable export.",
     url: "https://www.autodesk.com/products/flow-studio/overview",
@@ -214,6 +269,7 @@ export const resources: Resource[] = [
   {
     name: "Mixamo",
     category: "Animation & Video",
+    domains: ["Digital Illustration & Animation","Interactive Multimedia Design"],
     status: "verified",
     summary: "A dependable Adobe service for automatic character rigging and applying a large library of reusable motion clips.",
     url: "https://www.mixamo.com/",
@@ -222,6 +278,7 @@ export const resources: Resource[] = [
   {
     name: "LTX Studio",
     category: "Animation & Video",
+    domains: ["Digital Illustration & Animation"],
     status: "review",
     summary: "An integrated script-to-screen workspace for storyboards, scene generation, timelines, pitch materials, and team production.",
     url: "https://ltx.studio/",
@@ -231,6 +288,7 @@ export const resources: Resource[] = [
   {
     name: "Hera",
     category: "Motion Graphics",
+    domains: ["Digital Illustration & Animation","Interactive Multimedia Design"],
     status: "review",
     summary: "Prompt-driven motion graphics for explainer videos, brand systems, and quick animated compositions.",
     url: "https://hera.video/",
@@ -240,6 +298,7 @@ export const resources: Resource[] = [
   {
     name: "Meshy",
     category: "3D & Spatial",
+    domains: ["Exhibit & Experience Design","Interactive Multimedia Design"],
     status: "verified",
     summary: "A production-oriented text- and image-to-3D platform with textured assets, animation tools, and broad export support.",
     url: "https://www.meshy.ai/",
@@ -249,6 +308,7 @@ export const resources: Resource[] = [
   {
     name: "Tripo AI",
     category: "3D & Spatial",
+    domains: ["Interactive Multimedia Design"],
     status: "review",
     summary: "Fast text- and image-to-3D generation with a plausible role in concept modeling and asset-blockout workflows.",
     url: "https://www.tripo3d.ai/",
@@ -258,6 +318,7 @@ export const resources: Resource[] = [
   {
     name: "Polycam",
     category: "3D & Spatial",
+    domains: ["Exhibit & Experience Design","BFA Fine Art"],
     status: "verified",
     summary: "AI-assisted photogrammetry and LiDAR capture for turning physical objects, materials, rooms, and sites into measurable 3D records.",
     url: "https://poly.cam/",
@@ -267,6 +328,7 @@ export const resources: Resource[] = [
   {
     name: "Adobe Substance 3D Sampler",
     category: "3D & Spatial",
+    domains: ["Exhibit & Experience Design","BFA Fine Art"],
     status: "verified",
     summary: "A production material-authoring tool that converts photographs or generated textures into editable, tileable PBR materials and digital-twin assets.",
     url: "https://www.adobe.com/products/substance3d/apps/sampler.html",
@@ -277,6 +339,7 @@ export const resources: Resource[] = [
   {
     name: "Zoo Design Studio + Zookeeper",
     category: "Prototype & Engineering",
+    domains: ["Technology, Art & Design"],
     status: "review",
     summary: "An AI-native CAD environment that turns prompts, images, sketches, and KCL code into editable parametric B-Rep models.",
     url: "https://zoo.dev/design-studio",
@@ -287,6 +350,7 @@ export const resources: Resource[] = [
   {
     name: "Autodesk Fusion Generative Design",
     category: "Prototype & Engineering",
+    domains: ["Technology, Art & Design"],
     status: "verified",
     summary: "Integrated CAD, CAM, CAE, and generative design for exploring performance-driven parts and carrying selected outcomes into manufacturing.",
     url: "https://www.autodesk.com/solutions/generative-design/manufacturing",
@@ -371,6 +435,7 @@ export const resources: Resource[] = [
   {
     name: "CAD-Coder",
     category: "Prototype & Engineering",
+    domains: ["Computer Science & Design","Technology, Art & Design"],
     status: "review",
     summary: "An open research model that generates editable CadQuery code from images, showing how vision-language systems may support reproducible parametric CAD.",
     url: "https://github.com/anniedoris/CAD-Coder",
@@ -381,6 +446,7 @@ export const resources: Resource[] = [
   {
     name: "ChatGPT",
     category: "Apps & Games",
+    domains: ["Computer Science & Design","Project Management","Technology, Art & Design"],
     status: "verified",
     summary: "A general-purpose AI workspace for research, coding, prototyping, critique, file analysis, and multimodal creative work.",
     url: "https://chatgpt.com/",
@@ -390,6 +456,7 @@ export const resources: Resource[] = [
   {
     name: "Google AI Studio",
     category: "Apps & Games",
+    domains: ["Computer Science & Design","Interactive Multimedia Design"],
     status: "verified",
     summary: "A capable environment for testing Gemini models and building code-driven apps, games, and multimodal prototypes.",
     url: "https://aistudio.google.com/",
@@ -398,6 +465,7 @@ export const resources: Resource[] = [
   {
     name: "GitHub Copilot",
     category: "Apps & Games",
+    domains: ["Computer Science & Design"],
     status: "verified",
     summary: "A mature coding-agent ecosystem across editors, GitHub, and the command line for writing, reviewing, testing, and maintaining software.",
     url: "https://github.com/features/copilot",
@@ -406,6 +474,7 @@ export const resources: Resource[] = [
   {
     name: "Claude Code",
     category: "Apps & Games",
+    domains: ["Computer Science & Design"],
     status: "verified",
     summary: "A strong agentic coding tool for understanding codebases, editing files, running commands, and completing multi-step development work.",
     url: "https://www.anthropic.com/claude-code",
@@ -414,6 +483,7 @@ export const resources: Resource[] = [
   {
     name: "Cursor",
     category: "Apps & Games",
+    domains: ["Computer Science & Design"],
     status: "verified",
     summary: "An AI-native code editor with codebase-aware agents for planning, writing, reviewing, testing, and maintaining software.",
     url: "https://cursor.com/",
@@ -423,6 +493,7 @@ export const resources: Resource[] = [
   {
     name: "Vercel v0",
     category: "Apps & Games",
+    domains: ["Computer Science & Design","Interactive Multimedia Design"],
     status: "verified",
     summary: "A polished prompt-to-full-stack builder for generating, iterating, connecting, and deploying modern web applications.",
     url: "https://v0.dev/",
@@ -431,6 +502,7 @@ export const resources: Resource[] = [
   {
     name: "Gemini Notebook",
     category: "Research & Learning",
+    domains: ["Project Management","Visual Arts Education"],
     status: "verified",
     summary: "A source-grounded research and learning workspace for analyzing course materials, documents, notes, audio, and web sources with citations.",
     url: "https://notebooklm.google/",
@@ -440,6 +512,7 @@ export const resources: Resource[] = [
   {
     name: "Hugging Face Hub",
     category: "Research & Learning",
+    domains: ["Computer Science & Design"],
     status: "verified",
     summary: "A foundational open platform for discovering, documenting, testing, and sharing AI models, datasets, and demonstrations.",
     url: "https://huggingface.co/",
@@ -449,6 +522,7 @@ export const resources: Resource[] = [
   {
     name: "ElevenLabs",
     category: "Audio",
+    domains: ["Exhibit & Experience Design","Interactive Multimedia Design"],
     status: "verified",
     summary: "A professional voice platform for narration, speech synthesis, dubbing, voice design, localization, and audio production.",
     url: "https://elevenlabs.io/",
@@ -458,6 +532,7 @@ export const resources: Resource[] = [
   {
     name: "Descript",
     category: "Audio",
+    domains: ["Exhibit & Experience Design"],
     status: "verified",
     summary: "A mature text-based audio and video editor for transcription, cleanup, revision, captions, and collaborative production.",
     url: "https://www.descript.com/",
@@ -466,6 +541,7 @@ export const resources: Resource[] = [
   {
     name: "Adobe Podcast",
     category: "Audio",
+    domains: ["Visual Arts Education"],
     status: "verified",
     summary: "A focused browser workflow for enhancing spoken audio, recording remotely, transcribing, and editing speech.",
     url: "https://podcast.adobe.com/",
@@ -500,6 +576,7 @@ export const resources: Resource[] = [
   {
     name: "C2PA Content Credentials",
     category: "Responsible Practice",
+    domains: ["BFA Fine Art","Digital Illustration & Animation"],
     status: "verified",
     summary: "The open technical standard for attaching tamper-evident provenance and edit-history signals to digital media.",
     url: "https://c2pa.org/",
@@ -510,13 +587,221 @@ export const resources: Resource[] = [
   {
     name: "Glaze & Nightshade",
     category: "Responsible Practice",
+    domains: ["BFA Fine Art","Visual Arts Education"],
     status: "verified",
     summary: "University of Chicago tools that help artists resist unauthorized style mimicry and unconsented model training.",
     url: "https://glaze.cs.uchicago.edu/",
     note: "Verified for their stated protective purpose, not as a guarantee against every present or future attack.",
     tags: ["artist protection", "consent", "style mimicry", "research"],
   },
+  // Additional resources reviewed against official product documentation in October 2026.
+  {
+    name: "OpenAI Codex",
+    category: "Computer Science & Design",
+    domains: ["Apps & Games","Interactive Multimedia Design"],
+    status: "verified",
+    summary: "A coding agent for understanding repositories, implementing features, debugging, writing tests, and reviewing changes across software projects.",
+    url: "https://openai.com/codex/",
+    exampleUrl: "https://developers.openai.com/learn/codex",
+    note: "Start with a small specification and acceptance tests. Review changes in Git, run the project, and explain the result before publishing.",
+    tags: ["coding agent","software engineering","debugging","tests"],
+  },
+  {
+    name: "Gemini CLI",
+    category: "Computer Science & Design",
+    domains: ["Apps & Games"],
+    status: "verified",
+    summary: "Google’s open-source terminal agent for understanding code, editing projects, running tools, and automating development tasks with Gemini.",
+    url: "https://geminicli.com/docs/",
+    note: "The command-line tool runs on your computer, but Gemini inference uses the configured service. Review file access, commands, quotas, and account terms.",
+    tags: ["coding agent","terminal","Google","automation"],
+  },
+  {
+    name: "Continue",
+    category: "Computer Science & Design",
+    domains: ["Apps & Games","Technology, Art & Design"],
+    status: "verified",
+    summary: "An open-source coding assistant with chat, editing, autocomplete, and agent workflows that can connect an editor to local or hosted models.",
+    url: "https://docs.continue.dev/ide-extensions/quick-start",
+    exampleUrl: "https://docs.continue.dev/guides/running-continue-without-internet",
+    note: "Useful for comparing local and cloud coding assistance. Offline operation requires local models and explicit telemetry and provider configuration.",
+    tags: ["local coding","VS Code","JetBrains","open source"],
+  },
+  {
+    name: "Ollama",
+    category: "Computer Science & Design",
+    domains: ["Apps & Games","Technology, Art & Design"],
+    status: "verified",
+    summary: "A practical runtime for running supported language models locally and connecting them to coding assistants or small applications through an API.",
+    url: "https://docs.ollama.com/quickstart",
+    note: "Choose a model that fits the workstation and inspect its license. Local and cloud models are distinct options; verify which one the workflow actually uses.",
+    tags: ["local models","API","model serving","coding"],
+  },
+  {
+    name: "Playwright Test Agents",
+    category: "Computer Science & Design",
+    domains: ["Apps & Games","Interactive Multimedia Design"],
+    status: "verified",
+    summary: "AI-assisted browser testing that turns a test plan into executable Playwright checks and helps investigate or repair failing tests.",
+    url: "https://playwright.dev/docs/test-agents",
+    note: "A strong companion to generated websites and exhibit kiosks. Review assertions so an agent does not make a failing test pass by weakening the requirement.",
+    tags: ["browser testing","quality assurance","UI UX","coding agent"],
+  },
+  {
+    name: "MediaPipe Gesture Recognizer",
+    category: "Interactive Multimedia Design",
+    domains: ["Computer Science & Design","Exhibit & Experience Design","Technology, Art & Design"],
+    status: "verified",
+    summary: "Google’s on-device computer-vision toolkit for recognizing hand gestures and landmarks in interactive browser experiences.",
+    url: "https://ai.google.dev/edge/mediapipe/solutions/vision/gesture_recognizer/web_js",
+    exampleUrl: "https://github.com/google-ai-edge/mediapipe-samples-web",
+    note: "Useful for touchless exhibit prototypes. Test different users, lighting, and camera positions, and always provide an accessible alternative input.",
+    tags: ["computer vision","gesture control","interactive exhibit","JavaScript"],
+  },
+  {
+    name: "Google Teachable Machine",
+    category: "Visual Arts Education",
+    domains: ["Interactive Multimedia Design","Computer Science & Design","Technology, Art & Design"],
+    status: "verified",
+    summary: "A visual introduction to machine learning that trains image, sound, or pose classifiers and exports models for creative coding experiments.",
+    url: "https://teachablemachine.withgoogle.com/",
+    note: "A useful classroom way to examine dataset bias and generalization. Train with consented material and test examples the model has never seen.",
+    tags: ["machine learning","no code","classification","creative coding"],
+  },
+  {
+    name: "Hugging Face LLM Course",
+    category: "Computer Science & Design",
+    domains: ["Research & Learning"],
+    status: "reference",
+    summary: "A structured course on language models, Transformers, datasets, tokenizers, fine-tuning, and building reproducible model demonstrations.",
+    url: "https://huggingface.co/learn/llm-course/en/chapter1/1",
+    note: "Best for students with working Python knowledge; introductory deep learning is recommended. Use it to understand models beneath a chat interface.",
+    tags: ["Python","Transformers","machine learning","course"],
+  },
+  {
+    name: "D5 Render AI",
+    category: "Exhibit & Experience Design",
+    domains: ["3D & Spatial","Event Design & Planning"],
+    status: "verified",
+    summary: "Real-time spatial visualization with AI assistance for image enhancement, materials, and presentation workflows, with connections to 3ds Max and Blender.",
+    url: "https://www.d5render.com/",
+    exampleUrl: "https://www.d5render.com/ai-rendering",
+    note: "Keep the authored 3D model as the spatial source of truth. Check which AI functions use cloud services and which features the current education plan includes.",
+    tags: ["3ds Max","Blender","spatial visualization","AI rendering"],
+  },
+  {
+    name: "Chaos Veras",
+    category: "Exhibit & Experience Design",
+    domains: ["3D & Spatial","Event Design & Planning"],
+    status: "verified",
+    summary: "AI visualization for exploring materials, lighting, and atmosphere from sketches, images, and 3D model views, including image-to-video presentation.",
+    url: "https://www.chaos.com/veras",
+    note: "Use for visual alternatives and concept communication. Generated views can alter geometry, graphics, and details; compare them with the original model.",
+    tags: ["rendering","material studies","concept visualization","spatial design"],
+  },
+  {
+    name: "Vectorworks AI Visualizer",
+    category: "Event Design & Planning",
+    domains: ["Exhibit & Experience Design","3D & Spatial","Event Planning & Management"],
+    status: "verified",
+    summary: "AI-assisted image generation and refinement within Vectorworks, connecting spatial and entertainment design views to concept visualization.",
+    url: "https://forum.vectorworks.net/articles.html/articles/faqs/ai-visualizer-faq-update-r980/",
+    exampleUrl: "https://www.vectorworks.net/en-US/spotlight/capabilities",
+    note: "Relevant to Spotlight event and scenic workflows. Visualizer images are presentation studies; fabrication, rigging, egress, and occupancy require independent review.",
+    tags: ["Vectorworks","Spotlight","scenic design","event visualization"],
+  },
+  {
+    name: "Asana AI Studio",
+    category: "Project Management",
+    domains: ["Event Planning & Management","Technology, Art & Design"],
+    status: "verified",
+    summary: "AI-assisted work management for turning intake, briefs, and project updates into structured tasks, summaries, and repeatable team workflows.",
+    url: "https://asana.com/product/ai/ai-studio",
+    note: "Use a human-reviewed task list with named owners and real dependencies. Availability and AI usage limits depend on the plan and organization settings.",
+    tags: ["project planning","task management","dependencies","workflow automation"],
+  },
+  {
+    name: "Notion AI",
+    category: "Project Management",
+    domains: ["Event Planning & Management","Research & Learning"],
+    status: "verified",
+    summary: "AI assistance inside a shared documentation workspace for searching project knowledge, summarizing notes, and drafting briefs and progress updates.",
+    url: "https://www.notion.com/product/ai",
+    note: "Useful for a team project notebook and decision log. Check source permissions, connected services, and plan limits before adding client or student information.",
+    tags: ["project documentation","knowledge base","meeting notes","team planning"],
+  },
+  {
+    name: "Miro AI",
+    category: "Event Design & Planning",
+    domains: ["Project Management","Interactive Multimedia Design","Exhibit & Experience Design","Technology, Art & Design"],
+    status: "verified",
+    summary: "A collaborative canvas with AI-assisted diagrams, synthesis, and prototypes for mapping visitor journeys, design decisions, and team processes.",
+    url: "https://miro.com/ai/",
+    exampleUrl: "https://help.miro.com/hc/en-us/articles/20164358139794-Create-with-AI",
+    note: "Use generated maps as editable hypotheses. Validate visitor needs, access requirements, process steps, and dependencies with people and evidence.",
+    tags: ["visitor journey","diagrams","prototyping","collaboration"],
+  },
+  {
+    name: "CventIQ",
+    category: "Event Planning & Management",
+    domains: ["Event Design & Planning","Project Management"],
+    status: "verified",
+    summary: "An event-industry AI suite for planning assistance, event content, attendee support, feedback synthesis, and layout-related workflows.",
+    url: "https://www.cvent.com/en/cventiq",
+    exampleUrl: "https://community.cvent.com/education/learning-centers/product/cventiq",
+    note: "Worth knowing as a professional platform; full access may require an organizational license. Use sample event data for classroom exploration.",
+    tags: ["event operations","event planning","attendee experience","event technology"],
+  },
+  {
+    name: "Microsoft 365 Copilot",
+    category: "Project Management",
+    domains: ["Event Planning & Management","Research & Learning"],
+    status: "verified",
+    summary: "AI assistance across Microsoft 365 for drafting briefs, analyzing spreadsheets, summarizing meetings, and organizing project information.",
+    url: "https://www.microsoft.com/en-us/microsoft-365-copilot",
+    note: "Use university-approved accounts and check the features actually licensed by BSU. Confirm spreadsheet formulas, budgets, assignments, and meeting summaries.",
+    tags: ["Microsoft 365","project communication","budgets","meeting summaries"],
+  },
+  {
+    name: "UNESCO AI Competency Frameworks",
+    category: "Visual Arts Education",
+    domains: ["Responsible Practice","Research & Learning"],
+    status: "reference",
+    summary: "Teacher and student frameworks for planning AI learning around human agency, ethics, technical understanding, and purposeful classroom use.",
+    url: "https://www.unesco.org/en/articles/what-you-need-know-about-unescos-new-ai-competency-frameworks-students-and-teachers",
+    note: "A planning reference rather than a generative tool. Adapt objectives to visual arts learning and evaluate student thinking alongside any AI output.",
+    tags: ["AI literacy","teaching","assessment","human agency"],
+  },
+  {
+    name: "OCTANORM AI Booth Designer",
+    category: "Exhibit & Experience Design",
+    domains: ["Event Design & Planning","3D & Spatial"],
+    status: "review",
+    summary: "An exhibit-specific concept tool with a dimension-based 3D planner, CAD import, brand customization, and AI image editing by text or voice.",
+    url: "https://ai-booth-designer.octanorm.tools/",
+    exampleUrl: "https://www.octanorm.com/news/news-detail/ai-booth-designer-real-world-booth-dimensions-meet-creative-ideas/",
+    note: "The May 2026 planner update connects real booth geometry to visualization. Compare every AI result with the authored model; fabrication readiness and current export formats still require testing.",
+    tags: ["Octanorm","booth design","CAD import","3D planner"],
+  },
+  {
+    name: "OCTANORM CO₂ Calculator",
+    category: "Exhibit & Experience Design",
+    domains: ["Event Design & Planning","Event Planning & Management","Project Management"],
+    status: "reference",
+    summary: "A companion sustainability tool for estimating a booth’s carbon footprint and comparing material and construction choices alongside visual design alternatives.",
+    url: "https://co2-calculator.octanorm.tools/",
+    exampleUrl: "https://octanorm.tools/",
+    note: "Treat results as estimates tied to the entered assumptions and the tool’s methodology. Record material quantities, reuse assumptions, and the comparison boundary.",
+    tags: ["sustainability","exhibit planning","materials","carbon footprint"],
+  },
 ];
+
+export const directoryDomains = Array.from(new Set([
+  ...resources.map((resource) => resource.category),
+  ...advisoryBoardDomains,
+  "Project Management",
+  ...resources.flatMap((resource) => resource.domains ?? []),
+]));
 
 export const workflows = [
   {
@@ -582,6 +867,76 @@ export const workflows = [
     steps: ["Test a real task", "Read terms and limitations", "Check consent and provenance", "Document failures and uncertainty"],
     tools: ["C2PA Content Credentials", "Glaze & Nightshade", "Verification rubric"],
   },
+  {
+    number: "10",
+    title: "Specify, build, test, and explain a feature",
+    category: "Computer Science & Design",
+    steps: ["Write behavior and acceptance criteria","Implement one small change in a branch","Run unit and browser tests; inspect the diff","Explain the code and review before merging"],
+    tools: ["GitHub Copilot / Claude Code / OpenAI Codex","Playwright Test Agents","Git"],
+  },
+  {
+    number: "11",
+    title: "Compare local and cloud coding assistance",
+    category: "Computer Science & Design",
+    steps: ["Choose a small non-sensitive coding task","Configure and identify the model endpoint","Compare suggestions with the same tests","Record quality, runtime, data flow, and limitations"],
+    tools: ["Continue","Ollama","Cursor"],
+  },
+  {
+    number: "12",
+    title: "Exhibit concept to checked spatial design",
+    category: "Exhibit & Experience Design",
+    steps: ["Set booth dimensions and visitor goals","Create geometry and explore visual alternatives","Rebuild and compare in the authored 3D model","Check circulation, access, graphics, and assembly"],
+    tools: ["OCTANORM AI Booth Designer","3ds Max / Blender","Chaos Veras"],
+  },
+  {
+    number: "13",
+    title: "Exhibit model to AI-assisted fly-through",
+    category: "Exhibit & Experience Design",
+    steps: ["Author the camera path in 3ds Max or Blender","Export reference views and a camera or depth guide","Test an instructor-approved video workflow","Compare with the model and disclose visual changes"],
+    tools: ["3ds Max / Blender","ComfyUI","BN219 pilot — tutorials forthcoming"],
+  },
+  {
+    number: "14",
+    title: "Creative brief to accountable project plan",
+    category: "Project Management",
+    steps: ["Extract deliverables and acceptance criteria","Draft tasks, dependencies, and a risk log","Confirm owners, capacity, and dates with the team","Track changes and check actual progress"],
+    tools: ["Asana AI Studio","Notion AI","Microsoft 365 Copilot"],
+  },
+  {
+    number: "15",
+    title: "Visitor journey to event concept",
+    category: "Event Design & Planning",
+    steps: ["Define audience needs and experience goals","Map arrival, activity, and exit journeys","Explore layouts, atmosphere, and wayfinding","Validate with users and revise the plan"],
+    tools: ["Miro AI","Vectorworks AI Visualizer","OCTANORM AI Booth Designer"],
+  },
+  {
+    number: "16",
+    title: "Event brief to reviewed run of show",
+    category: "Event Planning & Management",
+    steps: ["Use sample data to outline the event","Draft schedule, communications, and handoffs","Confirm timing, budget, access, and contingencies","Reconcile feedback with documented decisions"],
+    tools: ["CventIQ","Asana AI Studio","Microsoft 365 Copilot"],
+  },
+  {
+    number: "17",
+    title: "Gesture-controlled exhibit prototype",
+    category: "Interactive Multimedia Design",
+    steps: ["Define a simple interaction and fallback control","Build a working interface and gesture input","Test with different users and lighting","Refine feedback, accessibility, and privacy"],
+    tools: ["MediaPipe Gesture Recognizer","Figma AI & Make","GitHub Copilot"],
+  },
+  {
+    number: "18",
+    title: "Teach model bias through a visual experiment",
+    category: "Visual Arts Education",
+    steps: ["Choose a visual learning goal","Train a classifier on consented examples","Test unfamiliar examples and record errors","Discuss dataset choices and assess understanding"],
+    tools: ["Google Teachable Machine","UNESCO AI Competency Frameworks","Canva AI / Magic Studio"],
+  },
+  {
+    number: "19",
+    title: "Document an authored visual practice",
+    category: "BFA Fine Art",
+    steps: ["Begin with original studies and source records","Use bounded AI variation to test an artistic question","Make and critique substantial human revisions","Present process evidence, credits, and decisions"],
+    tools: ["Krita Live Drawing Workflow","LoRA Training Workflow","C2PA Content Credentials"],
+  },
 ];
 
 export const projectIdeas = [
@@ -598,6 +953,31 @@ export const projectIdeas = [
   { title: "AI trainer journey", domain: "Project Management", format: "Process documentation" },
   { title: "Resistor / settler zine", domain: "Critical Design", format: "10-page zine or 3–5 minute video" },
   { title: "Exhibit design fly-through", domain: "Exhibit Design + 3D", format: "3ds Max primary / Blender alternate. Camera and depth guides to AI video. BN219 pilot and tutorials forthcoming." },
+  {
+    title: "Accessible exhibit kiosk",
+    domain: "Computer Science & Design + Interactive Multimedia Design",
+    format: "Working interface + browser tests + accessible input alternatives",
+  },
+  {
+    title: "Modular booth design audit",
+    domain: "Exhibit & Experience Design",
+    format: "OCTANORM concept + authored 3D model + dimensional and material comparison",
+  },
+  {
+    title: "Event run of show",
+    domain: "Event Planning & Management + Project Management",
+    format: "Reviewed schedule + task owners + dependency and risk log",
+  },
+  {
+    title: "Classifier bias lesson",
+    domain: "Visual Arts Education + Computer Science & Design",
+    format: "Small trained model + unfamiliar test set + reflection on errors",
+  },
+  {
+    title: "Authored style process book",
+    domain: "BFA Fine Art + Digital Illustration & Animation",
+    format: "Original studies + bounded AI iterations + documented human decisions",
+  },
 ];
 
 export const learningResources = [
@@ -668,3 +1048,4 @@ export const learningResources = [
     url: "https://www.404media.co/we-tracked-a-shipment-of-rare-books-it-ended-at-an-amazon-ai-training-facility/",
   },
 ];
+

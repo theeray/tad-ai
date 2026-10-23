@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build static site
-        run: npm run build:pages
+        run: npm run test:directory && npm run build:pages
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
         with:
@@ -48,3 +48,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+
